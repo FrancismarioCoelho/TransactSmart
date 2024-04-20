@@ -5,9 +5,10 @@ import com.devportfolio.banking.bankingapi.presentation.controller.user.UserRequ
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
-import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -29,17 +30,18 @@ public class User {
     @Column(name = "status")
     private String status;
 
+    @CreationTimestamp
     @Column(name = "create_at")
     private LocalDateTime createAt;
+
+    @UpdateTimestamp
+    @Column(name = "update_at")
+    private LocalDateTime updateAt;
 
     @OneToOne
     @JoinColumn(name = "role_id")
     private Role role;
 
-    @PrePersist
-    public void setCreateAt() {
-        this.createAt = LocalDateTime.now();;
-    }
 
     public User(UserRequestDTO dto) {
         login = dto.login();
