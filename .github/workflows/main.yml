@@ -1,0 +1,52 @@
+# Este é o nome do seu workflow de CI. Ele aparece na GUI do GitHub Actions.
+name: Java CI with Maven
+
+# O 'on' define os eventos do GitHub que irão acionar o workflow. 
+# Neste caso, ele irá rodar quando commits forem feitos na branch 'main' 
+# ou quando um pull request for aberto contra a branch 'main'.
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+# 'jobs' define as tarefas que o workflow irá executar.
+jobs:
+  build: # Este é o ID do job 'build', que pode ser qualquer nome descritivo.
+
+    # 'runs-on' especifica o tipo de máquina virtual que será usada para o job.
+    # 'ubuntu-latest' é uma referência à versão mais recente do Ubuntu oferecida pelo GitHub Actions.
+    runs-on: ubuntu-latest
+
+    # 'steps' são os passos individuais que o job irá executar.
+    steps:
+    - uses: actions/checkout@v2 # Este passo usa a ação 'checkout' para baixar o código do repositório.
+
+    # Este passo configura o ambiente de execução com uma versão específica do Java Development Kit (JDK).
+    # O 'temurin' é uma distribuição do Eclipse Adoptium, anteriormente conhecida como AdoptOpenJDK.
+    - name: Set up JDK 17
+      uses: actions/setup-java@v2
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+    
+    # Este passo tenta acelerar a instalação de dependências usando o cache do GitHub Actions.
+    # Ele armazena em cache as dependências baixadas para reutilizá-las em execuções subsequentes do workflow.
+    - name: Cache Maven packages
+      uses: actions/cache@v2
+      with:
+        path: ~/.m2 # O diretório onde as dependências do Maven são armazenadas.
+        key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }} # A chave única para o cache.
+        restore-keys: | # O que usar para restaurar o cache caso a chave exata não seja encontrada.
+          ${{ runner.os }}-m2
+    
+    # Este passo executa o comando Maven para limpar quaisquer builds anteriores e criar um novo pacote.
+    # A opção '-B' é para o modo batch, que evita logs desnecessários no console.
+    - name: Build with Maven
+      run: mvn -B clean package --file pom.xml
+    
+    # Este passo executa o comando Maven para rodar os testes do projeto.
+    # Embora o comando 'package' do Maven já execute os testes, este passo foi incluído para fins didáticos.
+    # Se preferir, este passo pode ser removido sem prejuízo, já que o pacote não será criado se os testes falharem.
+    - name: Run tests
+      run: mvn test
