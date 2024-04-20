@@ -45,3 +45,8 @@ jobs:
           SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/mytestdb
           SPRING_DATASOURCE_USERNAME: postgres
           SPRING_DATASOURCE_PASSWORD: postgres
+      
+      - name: Test with Maven
+        run: mvn test
+        env:
+         SPRING_PROFILES_ACTIVE: test    
