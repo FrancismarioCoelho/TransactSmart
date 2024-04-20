@@ -32,3 +32,30 @@ Inicie uma instância do PostgreSQL:
 
 ```bash
 docker run --name transactsmart-db -p 5432:5432 -e POSTGRES_USER=dbuser -e POSTGRES_PASSWORD=dbpass -e POSTGRES_DB=transactsmart -d postgres
+
+### Estrutura do Projeto
+
+O projeto segue a arquitetura hexagonal, organizada da seguinte maneira:
+
+```plaintext
+src/
+└── main/
+    └── java/
+        └── com/
+            └── devportfolio/
+                └── banking/
+                    └── bankingapi/
+                        ├── application/
+                        │   ├── core/
+                        │   └── outside/
+                        ├── domain/
+                        │   ├── model/
+                        │   ├── service/
+                        │   ├── shared/
+                        │   └── vo/
+                        ├── infrastructure/
+                        │   └── repository/
+                        └── presentation/
+                            └── controller/
+
+                           
