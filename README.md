@@ -30,14 +30,15 @@ Antes de iniciar, certifique-se de ter o Docker, Java 17 e Maven instalados em s
 
 Inicie uma instância do PostgreSQL:
 
+
 ```bash
 docker run --name transactsmart-db -p 5432:5432 -e POSTGRES_USER=dbuser -e POSTGRES_PASSWORD=dbpass -e POSTGRES_DB=transactsmart -d postgres
+```
 
 ### Estrutura do Projeto
 
 O projeto segue a arquitetura hexagonal, organizada da seguinte maneira:
-
-```plaintext
+ ```plaintext
 src/
 └── main/
     └── java/
