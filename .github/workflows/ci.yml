@@ -1,45 +1,48 @@
+# Define o nome do workflow
+name: Java CI with PostgreSQL
+
+# Define os eventos que irão disparar este workflow
 on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
+  push:  # Evento de push
+    branches: [ main ]  # Especifica quais branches esse evento aplica (branch main)
+  pull_request:  # Evento de pull request
+    branches: [ main ]  # Especifica quais branches esse evento aplica (branch main)
 
+# Define os jobs que o workflow irá executar
 jobs:
-  build-and-test:
-    runs-on: ubuntu-latest
+  build-and-test:  # Nome do job
+    runs-on: ubuntu-latest  # Define qual máquina virtual usar, neste caso a versão mais recente do Ubuntu
 
+    # Define os serviços necessários, como bancos de dados. Aqui definimos um serviço PostgreSQL.
     services:
-      postgres:
-        image: postgres:12-alpine
-        env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
-          POSTGRES_DB: mytestdb
+      postgres:  # Nome do serviço, usado para referenciar o container no ambiente de testes
+        image: postgres:12-alpine  # Define qual imagem Docker usar, neste caso a versão 12 do PostgreSQL baseada na distro Alpine
+        env:  # Variáveis de ambiente para configurar o PostgreSQL
+          POSTGRES_USER: postgres  # Usuário do banco de dados
+          POSTGRES_PASSWORD: postgres  # Senha do banco de dados
+          POSTGRES_DB: mytestdb  # Nome do banco de dados a ser criado
         ports:
-          - 5432:5432
+          - 5432:5432  # Mapeamento de portas (porta do host:porta do container)
         options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
+          --health-cmd pg_isready  # Comando para verificar a saúde do container
+          --health-interval 10s  # Intervalo entre verificações de saúde
+          --health-timeout 5s  # Tempo de espera para cada verificação de saúde
+          --health-retries 5  # Número de tentativas para verificar a saúde
 
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v2
+    steps:  # Passos a serem executados pelo job
+    - uses: actions/checkout@v2  # Este passo usa uma ação para checar o código do repositório antes de executar o job
 
-      - name: Set up JDK 17
-        uses: actions/setup-java@v2
-        with:
-          java-version: '17'
-          distribution: 'temurin'
-          cache: maven
+    - name: Set up JDK 17  # Passo para configurar o Java Development Kit (JDK)
+      uses: actions/setup-java@v2  # Usa a ação setup-java para instalar o Java
+      with:  # Opções para a ação setup-java
+        java-version: '17'  # Versão do Java para instalar
+        distribution: 'temurin'  # Distribuição do Java para usar, Temurin é a distribuição da Eclipse Foundation
+        cache: maven  # Habilita cache para as dependências do Maven
 
-      - name: Build with Maven
-        run: mvn -B clean install -DskipTests
+    - name: Build with Maven  # Passo para construir o projeto com Maven
+      run: mvn -B clean install -DskipTests  # Comando para limpar e instalar dependências, pulando os testes
 
-      - name: Test with Maven
-        run: mvn test
-        env:
-          SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/mytestdb
-          SPRING_DATASOURCE_USERNAME: postgres
-          SPRING_DATASOURCE_PASSWORD: postgres
+    - name: Test with Maven  # Passo para executar os testes com Maven
+      run: mvn test  # Comando para executar os testes
+      env:  # Variáveis de ambiente específicas para este passo
+        SPRING_PROFILES_ACTIVE: test  # Ativa o perfil 'test' para Spring, ideal para configurações específicas de teste
