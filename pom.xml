@@ -91,6 +91,19 @@
         </resources>
     </build>
 
+         <profiles>
+    <profile>
+        <id>ci-test</id>
+        <activation>
+            <activeByDefault>false</activeByDefault>
+        </activation>
+        <properties>
+            <spring.profiles.active>ci</spring.profiles.active>
+        </properties>
+    </profile>
+</profiles>
+
+
     <packaging>jar</packaging>
 
 
