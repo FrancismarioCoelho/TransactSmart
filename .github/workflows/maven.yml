@@ -21,11 +21,8 @@ jobs:
           distribution: 'temurin'
           cache: maven
 
-      - name: Run unit tests
-        run: mvn test
-
-      - name: List tests that Maven will run
-        run: mvn test -Dtest=none -DfailIfNoTests=false -DlistTests=true
+      - name: Run unit tests with verbose logging
+        run: mvn -X test
 
 
   
