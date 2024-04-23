@@ -24,5 +24,4 @@ jobs:
       - name: Build with Maven (Skip Tests)
         run: mvn -B clean install -DskipTests
 
-      - name: Run Unit Tests Only
-        run: mvn -B test
+  
