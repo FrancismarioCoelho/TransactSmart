@@ -1,4 +1,5 @@
-# TransactSmart API
+# TransactSmart API   ![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/FrancismarioCoelho/TransactSmart/maven)
+
 
 ## Sobre o Projeto
 
