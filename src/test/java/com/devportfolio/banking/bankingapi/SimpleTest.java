@@ -7,6 +7,6 @@ public class SimpleTest {
 
     @Test
     public void testTrueIsTrue() {
-        assertTrue("This test will always pass.", false);
+        assertTrue("This test will always pass.", true);
     }
 }
