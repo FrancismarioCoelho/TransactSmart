@@ -1,29 +1,36 @@
-name: Deploy application 
+name: Deploy to Production
 
-on: 
-    push:
-        branches: ["main"]
-
+on:
+  push:
+    branches:
+      - main  # Ajuste para corresponder ao nome da sua branch de produção, se necessário.
 
 jobs:
-    build:
-        runs-on: ubuntu-latest
-        steps:
-              - name: Checkout code
-                uses: actions/checkout@v3
-             
-              - name: Setup Java
-                uses: actions/setup-java@v3
-                with:
-                    distribution: 'temurin' 
-                    java-version: '17'
-              - name: Build project
-                run: mvn clean install -DskipTests
-              - name: Login Docker Hub
-                run: echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
-              - name: Builder docker image
-                run: docker build -t francismario/banking-api .
-              - name: Push image docker
-                run: docker push francismario/banking-api
-                
+  build_and_push:
+    runs-on: ubuntu-latest
 
+    steps:
+    - name: Check out the repo
+      uses: actions/checkout@v2
+
+    - name: Set up Java
+      uses: actions/setup-java@v2
+      with:
+        distribution: 'temurin'
+        java-version: '17'
+
+    - name: Build project
+      run: mvn clean install -DskipTests  # Ajuste os parâmetros do Maven conforme necessário.
+
+    - name: Login Docker Hub
+      env:
+        DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+        DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+      run: |
+        echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+
+    - name: Build docker image
+      run: docker build -t francismario/banking-api .
+
+    - name: Push image docker
+      run: docker push francismario/banking-api
