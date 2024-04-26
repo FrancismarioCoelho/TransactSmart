@@ -25,9 +25,10 @@ jobs:
     - name: Login Docker Hub
       env:
         DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-        DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+        DOCKER_PAT: ${{ secrets.DOCKER_PAT }}
       run: |
-        echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+        echo "$DOCKER_PAT" | docker login -u "$DOCKER_USERNAME" --password-stdin
+
 
     - name: Build docker image
       run: docker build -t francismario/banking-api .
