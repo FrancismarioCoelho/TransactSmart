@@ -20,10 +20,10 @@ jobs:
               - name: Build project
                 run: mvn clean install -DskipTests
               - name: Login Docker Hub
-                run: docker login -u ${{secrets.DOCKER_USERNAME}} -p ${{secrets.DOCKER_PASSWORD}}
+                run: echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
               - name: Builder docker image
-                run: docker build -t francismario/banking-api .
+                run: docker build -t FrancismarioCoelho/banking-api .
               - name: Push image docker
-                run: docker push francismario/banking-api
+                run: docker push FrancismarioCoelho/banking-api
                 
 
