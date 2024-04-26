@@ -22,8 +22,8 @@ jobs:
               - name: Login Docker Hub
                 run: echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
               - name: Builder docker image
-                run: docker build -t FrancismarioCoelho/banking-api .
+                run: docker build -t francismario/banking-api .
               - name: Push image docker
-                run: docker push FrancismarioCoelho/banking-api
+                run: docker push francismario/banking-api
                 
 
