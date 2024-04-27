@@ -39,7 +39,7 @@ jobs:
 
     steps:
       - name: Pull image from docker hub
-        run: docker pull francismario/banking-api:latest
+        run: docker pull francismario/banking-api
       - name: Remove docker container
         run: docker rm -f deploy_application_api
       - name: Run docker container
