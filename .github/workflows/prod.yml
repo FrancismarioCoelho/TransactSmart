@@ -25,5 +25,12 @@ jobs:
                 run: docker build -t FrancismarioCoelho/banking-api .
               - name: Push image docker
                 run: docker push FrancismarioCoelho/banking-api
-                
+    deploy:
+        needs: build
+        runs-on: self-hosted
+        steps:
+           - name: Pull image from docker hub
+             run: docker pull  FrancismarioCoelho/banking-api:latest
+           - name: Run docker container
+             run: docker run -d -p 8080:8080 --name deploy_aplication_api             
 
